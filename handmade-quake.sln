@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "handmade-quake", "handmade-quake\handmade-quake.vcxproj", "{9A1104D3-4E24-4677-BBA0-AAA6EAA4BFFE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "handmade-quake", "handmade-quake\handmade-quake.vcxproj", "{00FAA902-43A9-4F17-8D11-EDBF55146E8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A1104D3-4E24-4677-BBA0-AAA6EAA4BFFE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{9A1104D3-4E24-4677-BBA0-AAA6EAA4BFFE}.Debug|Win32.Build.0 = Debug|Win32
-		{9A1104D3-4E24-4677-BBA0-AAA6EAA4BFFE}.Release|Win32.ActiveCfg = Release|Win32
-		{9A1104D3-4E24-4677-BBA0-AAA6EAA4BFFE}.Release|Win32.Build.0 = Release|Win32
+		{00FAA902-43A9-4F17-8D11-EDBF55146E8F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{00FAA902-43A9-4F17-8D11-EDBF55146E8F}.Debug|Win32.Build.0 = Debug|Win32
+		{00FAA902-43A9-4F17-8D11-EDBF55146E8F}.Release|Win32.ActiveCfg = Release|Win32
+		{00FAA902-43A9-4F17-8D11-EDBF55146E8F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
