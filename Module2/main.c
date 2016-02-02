@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <stdio.h>
 
+#include "host.h"
+
 static BOOL IsRunning = TRUE;				// controls whether the game loop is running
 
 void Sys_Shutdown(void)
@@ -94,13 +96,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	width = rectangle.right - rectangle.left;
 	height = rectangle.bottom - rectangle.top;
 
-	mainWindow = CreateWindowEx(0, "Module 2", "Lesson 2.4", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
+	mainWindow = CreateWindowEx(0, "Module 2", "Lesson 2.5", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
 
 	HDC deviceContext = GetDC(mainWindow);
 	PatBlt(deviceContext, 0, 0, width, height, BLACKNESS);
 	ReleaseDC(mainWindow, deviceContext);
 
-	float time = Sys_InitFloatTime();
+	Host_Init();
+
+	float oldTime = Sys_InitFloatTime();
+	float targetTime = 1.0f / 60.0f;
+	float timeAccumulated = 0.0f;
 
 	MSG message;
 
@@ -112,14 +118,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&message);
 		}
 
-		float new_time = Sys_FloatTime();
+		float newTime = Sys_FloatTime();
+		float delta = newTime - oldTime;
+		oldTime = newTime;
+		timeAccumulated += delta;
 
-		char buf[64];
-		sprintf_s(buf, 64, "Total time: %3.7f \n", new_time);
-		OutputDebugString(buf);
+		if (timeAccumulated >= targetTime)
+		{
+			Host_Frame(targetTime);
+			timeAccumulated -= targetTime;
+		}
 
 		Sleep(1);
 	}
+
+	Host_Shutdown();
 
 	return 0;
 }
