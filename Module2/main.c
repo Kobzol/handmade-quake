@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	width = rectangle.right - rectangle.left;
 	height = rectangle.bottom - rectangle.top;
 
-	mainWindow = CreateWindowEx(0, "Module 2", "Lesson 2.5", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
+	mainWindow = CreateWindowEx(0, "Module 2", "Lesson 2.6", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
 
 	HDC deviceContext = GetDC(mainWindow);
 	PatBlt(deviceContext, 0, 0, width, height, BLACKNESS);
