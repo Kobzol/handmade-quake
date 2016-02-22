@@ -82,12 +82,15 @@
     <ClCompile Include="host.c" />
     <ClCompile Include="q_stl.c" />
     <ClCompile Include="sys_win.c" />
+    <ClCompile Include="vid_win.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
     <ClInclude Include="host.h" />
     <ClInclude Include="quakedef.h" />
     <ClInclude Include="q_stl.h" />
+    <ClInclude Include="sys.h" />
+    <ClInclude Include="vid.h" />
     <ClInclude Include="winquake.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

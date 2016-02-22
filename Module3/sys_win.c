@@ -175,7 +175,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HWND mainWindow = CreateWindowEx(
 		windowStyleEx,
 		"Module 3",
-		"Lesson 3.4",
+		"Lesson 3.5",
 		windowStyle,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -271,7 +271,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		StretchDIBits(hdc, 0, 0, WindowWidth, WindowHeight, 0, 0, BufferWidth, BufferHeight, BackBuffer, (BITMAPINFO*) &BitMapInfo, DIB_RGB_COLORS, SRCCOPY);
 	}
 
-	DeleteDC(hdc);
+	ReleaseDC(mainWindow, hdc);
 	free(BackBuffer);
 
 	free(pauseData);

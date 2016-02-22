@@ -80,6 +80,11 @@
   <ItemGroup>
     <ClCompile Include="sys_win.c" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DISC.lmp" />
+    <None Include="palette.lmp" />
+    <None Include="pause.lmp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

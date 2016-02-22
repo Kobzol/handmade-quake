@@ -1,6 +1,7 @@
 #pragma once
 
 #include "quakedef.h"
+#include "vid.h"
 
 void Host_Init(void);
 qboolean Host_FilterTime(float time);

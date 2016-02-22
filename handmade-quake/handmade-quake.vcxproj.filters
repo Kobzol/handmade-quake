@@ -27,6 +27,9 @@
     <ClCompile Include="host.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vid_win.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -42,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="host.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

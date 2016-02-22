@@ -6,11 +6,13 @@ double host_frametime = 0;
 
 void Host_Init(void)
 {
-
+	VID_Init();
 }
 
 qboolean Host_FilterTime(float time)
 {
+	realtime += time;
+
 	if (realtime - oldrealtime < 1.0 / 72.0)
 	{
 		return false;
@@ -29,11 +31,15 @@ void Host_Frame(float time)
 		return;
 	}
 
+	Sys_SendKeyEvents();
+
+	VID_Update();
+
 	// update game
 	// render scene
 }
 
 void Host_Shutdown(void)
 {
-
+	VID_Shutdown();
 }

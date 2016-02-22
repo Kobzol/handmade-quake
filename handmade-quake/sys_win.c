@@ -7,11 +7,22 @@
 
 static qboolean IsRunning = true;				// controls whether the game loop is running
 
+HINSTANCE GlobalInstance;
+
 void Sys_Shutdown(void)
 {
 	IsRunning = false;
 
 	PostQuitMessage(0);
+}
+void Sys_SendKeyEvents(void)
+{
+	MSG message;
+	while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&message);
+		DispatchMessage(&message);
+	}
 }
 
 /////////////////////////////////
@@ -50,76 +61,18 @@ float Sys_FloatTime(void)
 	return (float)GTimePassed;
 }
 
-LRESULT CALLBACK MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	LRESULT result = 0;
-
-	switch (uMsg)
-	{
-	case WM_ACTIVATE:
-		break;
-	case WM_CREATE:
-		break;
-	case WM_DESTROY:
-		Sys_Shutdown();
-		break;
-	default:
-		result = DefWindowProc(hwnd, uMsg, wParam, lParam);
-	}
-
-	return result;
-}
-
 int32 WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32 nShowCmd)
 {
+	GlobalInstance = hInstance;
+
 	COM_ParseCmdLine(lpCmdLine);
-
-	WNDCLASS wc = { 0 };
-	wc.lpfnWndProc = MainWndProc;
-	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.lpszClassName = "Module 2";
-
-	if (!RegisterClass(&wc))
-	{
-		return EXIT_FAILURE;
-	}
-
-	HWND mainWindow;
-	DWORD windowStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
-
-	int32 width = 800;
-	int32 height = 600;
-
-	RECT rectangle = { 0 };
-	rectangle.bottom = height;
-	rectangle.right = width;
-
-	AdjustWindowRect(&rectangle, windowStyle, 0);
-
-	width = rectangle.right - rectangle.left;
-	height = rectangle.bottom - rectangle.top;
-
-	mainWindow = CreateWindowEx(0, "Module 2", "Lesson 2.6", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, NULL);
-
-	HDC deviceContext = GetDC(mainWindow);
-	PatBlt(deviceContext, 0, 0, width, height, BLACKNESS);
-	ReleaseDC(mainWindow, deviceContext);
 
 	Host_Init();
 
 	float oldTime = Sys_InitFloatTime();
 
-	MSG message;
-
 	while (IsRunning)
 	{
-		while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&message);
-			DispatchMessage(&message);
-		}
-
 		float newTime = Sys_FloatTime();
 		Host_Frame(newTime - oldTime);
 		oldTime = newTime;
