@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -10,21 +11,18 @@ typedef struct
 	int directoryOffset;
 	int directoryLength;
 } dpackheader_t;
-
 typedef struct
 {
 	char fileName[56];
 	int filePosition;
 	int fileLength;
 } dpackfile_t;
-
 typedef struct
 {
 	char fileName[64];
 	int filePosition;
 	int fileLength;
 } packfile_t;
-
 typedef struct
 {
 	char packName[128];
@@ -33,8 +31,13 @@ typedef struct
 	packfile_t* packFiles;
 } pack_t;
 
-#define MAX_FILES_IN_PACK (2048)
+typedef struct searchpath_s
+{
+	pack_t* pack;
+	struct searchpath_s* next;
+} searchpath_t;
 
+#define MAX_FILES_IN_PACK (2048)
 pack_t* COM_LoadPackFile(char* pakFile)
 {
 	int pakSize;
@@ -78,10 +81,67 @@ pack_t* COM_LoadPackFile(char* pakFile)
 	return pak;
 }
 
+static searchpath_t* COM_SearchPaths = NULL;
+
+void COM_AddGameDirectory(const char* directory)
+{
+	char buffer[128];
+
+	for (int i = 0; ; i++)
+	{
+		sprintf_s(buffer, 128, "%s/pak%d.pak", directory, i);
+		pack_t* pack = COM_LoadPackFile(buffer);
+		
+		if (!pack)
+		{
+			break;
+		}
+
+		searchpath_t* newPath = (searchpath_t*) malloc(sizeof(searchpath_t));
+		newPath->pack = pack;
+		newPath->next = COM_SearchPaths;
+		COM_SearchPaths = newPath;
+	}
+}
+char* COM_FindFile(const char* fileName, int* length)
+{
+	if (!fileName) return NULL;
+
+	searchpath_t* jogger = COM_SearchPaths;
+
+	while (jogger != NULL)
+	{
+		pack_t* pack = jogger->pack;
+		for (int i = 0; i < pack->numberOfFiles; i++)
+		{
+			packfile_t* packFile = pack->packFiles + i;
+			if (!strcmp(packFile->fileName, fileName))
+			{
+				Sys_FileSeek(pack->packHandle, packFile->filePosition);
+				char* fileData = (char*) malloc(packFile->fileLength);
+				Sys_FileRead(pack->packHandle, fileData, packFile->fileLength);
+
+				if (length)
+				{
+					*length = packFile->fileLength;
+				}
+
+				return fileData;
+			}
+		}
+
+		jogger = jogger->next;
+	}
+
+	return NULL;
+}
+
 int main(int argc, char** argv)
 {
-	pack_t* pak0 = COM_LoadPackFile("id1/pak0.pak");
-	pack_t* pak1 = COM_LoadPackFile("id1/pak1.pak");
+	COM_AddGameDirectory("id1");
+
+	int length;
+	char* paletteBits = COM_FindFile("gfx/palette.lmp", &length);
 
 	return 0;
 }

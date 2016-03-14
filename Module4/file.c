@@ -35,13 +35,16 @@ int Sys_FileOpenRead(char* path, int *size)
 
 	errno_t result = fopen_s(&FileHandles[handle], path, "rb");
 
-	if (size)
+	if (!result)
 	{
-		*size = FileLength(FileHandles[handle]);
-	}
+		if (size)
+		{
+			*size = FileLength(FileHandles[handle]);
+		}
 
-	if (result) return -1;
-	else return handle;
+		return handle;
+	}
+	else return -1;
 }
 int Sys_FileOpenWrite(char* path)
 {
