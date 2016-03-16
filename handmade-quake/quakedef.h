@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef int8_t int8;
 typedef uint8_t uint8;

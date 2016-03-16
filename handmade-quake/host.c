@@ -1,4 +1,5 @@
 #include "host.h"
+#include "common.h"
 
 double realtime = 0;
 double oldrealtime = 0;
@@ -6,6 +7,7 @@ double host_frametime = 0;
 
 void Host_Init(void)
 {
+	COM_FileInit();
 	VID_Init();
 }
 
@@ -42,4 +44,5 @@ void Host_Frame(float time)
 void Host_Shutdown(void)
 {
 	VID_Shutdown();
+	COM_FileShutdown();
 }

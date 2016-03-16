@@ -5,8 +5,9 @@
 
 #define COM_MAX_NUM_ARGVS 50
 
-extern int32 COM_argc;
-extern char* COM_largv[COM_MAX_NUM_ARGVS + 1];
-
 int32 COM_CheckParm(char* parm);
 void COM_ParseCmdLine(char* lpCmdLine);
+
+void COM_FileInit(void);
+char* COM_FindFile(const char* fileName, int* length);
+void COM_FileShutdown(void);
