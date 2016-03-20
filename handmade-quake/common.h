@@ -9,5 +9,5 @@ int32 COM_CheckParm(char* parm);
 void COM_ParseCmdLine(char* lpCmdLine);
 
 void COM_FileInit(void);
-char* COM_FindFile(const char* fileName, int* length);
+uint8* COM_FindFile(const char* fileName, uint32* length);
 void COM_FileShutdown(void);

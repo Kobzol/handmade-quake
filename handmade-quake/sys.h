@@ -3,9 +3,9 @@
 void Sys_Shutdown(void);
 void Sys_SendKeyEvents(void);
 
-int Sys_FileOpenRead(char* path, int *size);
-int Sys_FileOpenWrite(char* path);
-void Sys_FileClose(int handle);
-void Sys_FileSeek(int handle, int position);
-int Sys_FileRead(int handle, void* dest, int count);
-int Sys_FileWrite(int handle, void* source, int count);
+int32 Sys_FileOpenRead(uint8* path, uint32 *size);
+int32 Sys_FileOpenWrite(uint8* path);
+void Sys_FileClose(int32 handle);
+void Sys_FileSeek(int32 handle, uint32 position);
+int32 Sys_FileRead(int32 handle, void* dest, uint32 count);
+int32 Sys_FileWrite(int32 handle, void* source, uint32 count);

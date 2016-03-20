@@ -70,7 +70,7 @@ float Sys_FloatTime(void)
 #define MAX_HANDLES 10
 static FILE* FileHandles[MAX_HANDLES] = { 0 };
 
-static int FindHandle(void)
+static int32 FindHandle(void)
 {
 	for (int i = 0; i < MAX_HANDLES; i++)
 	{
@@ -82,20 +82,20 @@ static int FindHandle(void)
 
 	return -1;
 }
-static int FileLength(FILE* file)
+static uint32 FileLength(FILE* file)
 {
-	int pos = ftell(file);
+	uint32 pos = ftell(file);
 	fseek(file, 0, SEEK_END);
 
-	int end = ftell(file);
+	uint32 end = ftell(file);
 	fseek(file, pos, SEEK_SET);
 
 	return end;
 }
 
-int Sys_FileOpenRead(char* path, int *size)
+int32 Sys_FileOpenRead(uint8* path, uint32 *size)
 {
-	int handle = FindHandle();
+	int32 handle = FindHandle();
 	if (handle < 0) return -1;
 
 	errno_t result = fopen_s(&FileHandles[handle], path, "rb");
@@ -111,9 +111,9 @@ int Sys_FileOpenRead(char* path, int *size)
 	}
 	else return -1;
 }
-int Sys_FileOpenWrite(char* path)
+int32 Sys_FileOpenWrite(uint8* path)
 {
-	int handle = FindHandle();
+	int32 handle = FindHandle();
 	if (handle < 0) return -1;
 
 	errno_t result = fopen_s(&FileHandles[handle], path, "wb");
@@ -121,18 +121,18 @@ int Sys_FileOpenWrite(char* path)
 	if (result) return -1;
 	else return handle;
 }
-void Sys_FileClose(int handle)
+void Sys_FileClose(int32 handle)
 {
 	if (handle < 0 || handle >= MAX_HANDLES) return;
 
 	FILE* file = FileHandles[handle];
 	if (file)
 	{
-		int result = fclose(file);
+		int32 result = fclose(file);
 		FileHandles[handle] = NULL;
 	}
 }
-void Sys_FileSeek(int handle, int position)
+void Sys_FileSeek(int32 handle, uint32 position)
 {
 	if (handle < 0 || handle >= MAX_HANDLES) return;
 
@@ -142,7 +142,7 @@ void Sys_FileSeek(int handle, int position)
 		fseek(file, position, SEEK_SET);
 	}
 }
-int Sys_FileRead(int handle, void* dest, int count)
+int32 Sys_FileRead(int32 handle, void* dest, uint32 count)
 {
 	if (handle < 0 || handle >= MAX_HANDLES) return -1;
 
@@ -155,7 +155,7 @@ int Sys_FileRead(int handle, void* dest, int count)
 
 	return -1;
 }
-int Sys_FileWrite(int handle, void* source, int count)
+int32 Sys_FileWrite(int32 handle, void* source, uint32 count)
 {
 	if (handle < 0 || handle >= MAX_HANDLES) return -1;
 
@@ -163,7 +163,7 @@ int Sys_FileWrite(int handle, void* source, int count)
 
 	if (file)
 	{
-		return (int)fwrite(source, 1, count, file);
+		return (int32) fwrite(source, 1, count, file);
 	}
 
 	return -1;

@@ -1,19 +1,21 @@
 #include "vid.h"
+#include "common.h"
+#include "draw.h"
 
 static HWND MainWindow;
 
 static uint32 WindowHeight = 600;
 static uint32 WindowWidth = 800;
-static uint32 BufferWidth = 320;
-static uint32 BufferHeight = 240;
-
-static void* BackBuffer = NULL;
 
 static BITMAPINFO BitMapInfo = { 0 };
 static vmode_t Modelist[50];
 static uint32 ModeCount = 0;
 static uint32 ModeActive = 0;
 static uint32_t FirstFullscreenMode = 0;
+
+static backbuffer_t ColorArray[256];
+
+viddef_t Vid;
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -94,12 +96,30 @@ void VID_Init(void)
 	wc.lpfnWndProc = MainWndProc;
 	wc.hInstance = GlobalInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.lpszClassName = "Module 3";
+	wc.lpszClassName = "Module 4";
 
 	if (!RegisterClassEx(&wc))
 	{
 		exit(EXIT_FAILURE);
 	}
+
+	Vid.BufferWidth = 320;
+	Vid.BufferHeight = 240;
+
+	uint8* paletteData = COM_FindFile("gfx/palette.lmp", NULL);
+
+	for (int i = 0; i < 256; i++)
+	{
+		uint8 red = paletteData[i * 3];
+		uint8 green = paletteData[i * 3 + 1];
+		uint8 blue = paletteData[i * 3 + 2];
+
+		ColorArray[i] = (red << 16) | (green << 8) | blue;
+	}
+
+	Vid.ColorData = ColorArray;
+
+	free(paletteData);
 
 	DWORD windowStyleEx = 0;
 	DWORD windowStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
@@ -113,7 +133,7 @@ void VID_Init(void)
 	uint32 width = windowInnerSize.right - windowInnerSize.left;
 	uint32 height = windowInnerSize.bottom - windowInnerSize.top;
 
-	MainWindow = CreateWindowEx(windowStyleEx, "Module 3", "Lesson 3.6", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, GlobalInstance, NULL);
+	MainWindow = CreateWindowEx(windowStyleEx, "Module 4", "Lesson 4.6", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, GlobalInstance, NULL);
 
 	HDC deviceContext = GetDC(MainWindow);
 	PatBlt(deviceContext, 0, 0, width, height, BLACKNESS);
@@ -121,18 +141,23 @@ void VID_Init(void)
 
 	// bitmap info
 	BitMapInfo.bmiHeader.biSize = sizeof(BitMapInfo.bmiHeader);
-	BitMapInfo.bmiHeader.biWidth = BufferWidth;
-	BitMapInfo.bmiHeader.biHeight = - (int32) BufferHeight;
+	BitMapInfo.bmiHeader.biWidth = Vid.BufferWidth;
+	BitMapInfo.bmiHeader.biHeight = -(int32) Vid.BufferHeight;
 	BitMapInfo.bmiHeader.biPlanes = 1;
-	BitMapInfo.bmiHeader.biBitCount = 8;
+	BitMapInfo.bmiHeader.biBitCount = 32;
 	BitMapInfo.bmiHeader.biCompression = BI_RGB;
 
-	BackBuffer = malloc(BufferWidth * BufferHeight);
+	Vid.BackBuffer = malloc(Vid.BufferWidth * Vid.BufferHeight * sizeof(backbuffer_t));
 
 	VID_InitWindowedMode();
 	VID_InitFullscreenMode();
 
 	VID_SetMode(0);
+
+	uint8* img = COM_FindFile("gfx/menuplyr.lmp", NULL);
+	DrawPic32(10, 10, 48, 56, img + 8);
+
+	free(img);
 }
 void VID_InitWindowedMode(void)
 {
@@ -204,12 +229,11 @@ void VID_InitFullscreenMode(void)
 void VID_Update(void)
 {
 	HDC hdc = GetDC(MainWindow);
-	StretchDIBits(hdc, 0, 0, WindowWidth, WindowHeight, 0, 0, BufferWidth, BufferHeight, BackBuffer, &BitMapInfo, DIB_RGB_COLORS, SRCCOPY);
+	StretchDIBits(hdc, 0, 0, WindowWidth, WindowHeight, 0, 0, Vid.BufferWidth, Vid.BufferHeight, Vid.BackBuffer, &BitMapInfo, DIB_RGB_COLORS, SRCCOPY);
 	ReleaseDC(MainWindow, hdc);
 }
-
 void VID_Shutdown(void)
 {
-	free(BackBuffer);
-	BackBuffer = NULL;
+	free(Vid.BackBuffer);
+	Vid.BackBuffer = NULL;
 }

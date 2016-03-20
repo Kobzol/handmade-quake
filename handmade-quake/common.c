@@ -167,7 +167,7 @@ static void COM_AddGameDirectory(const char* directory)
 		COM_SearchPaths = newPath;
 	}
 }
-char* COM_FindFile(const char* fileName, int* length)
+uint8* COM_FindFile(const char* fileName, uint32* length)
 {
 	if (!fileName) return NULL;
 
@@ -182,7 +182,7 @@ char* COM_FindFile(const char* fileName, int* length)
 			if (!Q_strcmp(packFile->fileName, fileName))
 			{
 				Sys_FileSeek(pack->packHandle, packFile->filePosition);
-				char* fileData = (char*)malloc(packFile->fileLength);
+				uint8* fileData = (uint8*) malloc(packFile->fileLength);
 				Sys_FileRead(pack->packHandle, fileData, packFile->fileLength);
 
 				if (length)
