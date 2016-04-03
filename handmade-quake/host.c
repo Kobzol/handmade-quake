@@ -1,5 +1,6 @@
 #include "host.h"
 #include "common.h"
+#include "wad.h"
 
 double realtime = 0;
 double oldrealtime = 0;
@@ -9,6 +10,9 @@ void Host_Init(void)
 {
 	COM_FileInit();
 	VID_Init();
+	W_LoadWadFile("gfx.wad");
+	void* mem = W_GetLumpName("num_0");
+	int a = 5;
 }
 
 qboolean Host_FilterTime(float time)

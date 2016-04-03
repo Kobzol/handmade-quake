@@ -33,6 +33,9 @@
     <ClCompile Include="draw.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "quakedef.h"
 #include "q_stl.h"

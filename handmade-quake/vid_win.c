@@ -27,7 +27,7 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CREATE:
 		break;
-	case WM_DESTROY:
+	case WM_CLOSE:
 		Sys_Shutdown();
 		break;
 	case WM_KEYDOWN:
@@ -96,7 +96,7 @@ void VID_Init(void)
 	wc.lpfnWndProc = MainWndProc;
 	wc.hInstance = GlobalInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.lpszClassName = "Module 4";
+	wc.lpszClassName = "Handmade Quake";
 
 	if (!RegisterClassEx(&wc))
 	{
@@ -133,7 +133,7 @@ void VID_Init(void)
 	uint32 width = windowInnerSize.right - windowInnerSize.left;
 	uint32 height = windowInnerSize.bottom - windowInnerSize.top;
 
-	MainWindow = CreateWindowEx(windowStyleEx, "Module 4", "Lesson 4.6", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, GlobalInstance, NULL);
+	MainWindow = CreateWindowEx(windowStyleEx, "Handmade Quake", "Lesson 4.7", windowStyle, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, GlobalInstance, NULL);
 
 	HDC deviceContext = GetDC(MainWindow);
 	PatBlt(deviceContext, 0, 0, width, height, BLACKNESS);
