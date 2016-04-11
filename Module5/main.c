@@ -11,6 +11,7 @@ int main(int argc, char** argv)
 	Memory_Init(memory, ALLOC_SIZE);
 
 	Hunk_AllocName(1, "test");
+	Hunk_Chunk();
 
 	free(memory);
 
